@@ -16,6 +16,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.weatherforcast.bean.JsonRootBean;
 import com.weatherforcast.helperBean.BaseResponse;
 
 @Service
@@ -66,10 +67,10 @@ public class WeatherForCastServiceImpl implements WeatherForCastService {
 
 
 	@Override
-	public BaseResponse<String> getHourlyForecastSummaryByLocationName(String locationName) {
-		ResponseEntity<String> responseEntity = null;
-		BaseResponse<String> baseResponse = new BaseResponse<>();
-		List<String> lstData = new ArrayList<>();
+	public BaseResponse<JsonRootBean> getHourlyForecastSummaryByLocationName(String locationName) {
+		ResponseEntity<JsonRootBean> responseEntity = null;
+		BaseResponse<JsonRootBean> baseResponse = new BaseResponse<>();
+		List<JsonRootBean> lstData = new ArrayList<>();
 		try {
 			
 			String url = XRapidApiURL+locationName+"/hourly/";
@@ -80,9 +81,9 @@ public class WeatherForCastServiceImpl implements WeatherForCastService {
 			headers.add("X-RapidAPI-Host", XRapidApiHost);
 			xWwwFormData.add("locationName", locationName);
 			HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(xWwwFormData, headers);
-			responseEntity = restTemplate.exchange(url,HttpMethod.GET, request,String.class);
+			responseEntity = restTemplate.exchange(url,HttpMethod.GET, request,JsonRootBean.class);
 			LOG.info(responseEntity);
-			lstData.add(responseEntity.toString());
+			lstData.add(responseEntity.getBody());
 			baseResponse.setData(lstData);
 			baseResponse.getResponse().setRespCode("0000");
 			baseResponse.getResponse().setType("SUCCESS");

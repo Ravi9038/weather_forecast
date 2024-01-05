@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.weatherforcast.bean.JsonRootBean;
 import com.weatherforcast.helperBean.BaseResponse;
 import com.weatherforcast.service.WeatherForCastService;
 
@@ -25,8 +26,9 @@ public class WeatherForCastController {
 	}
 	
 	@GetMapping("/get/hourly/forecast/bylocationname")
-	public BaseResponse<String> getHourlyForecastSummaryByLocationName(@RequestParam String locationName) {
-		BaseResponse<String> responseEntity = weatherForCastService.getHourlyForecastSummaryByLocationName(locationName);
+	public BaseResponse<JsonRootBean> getHourlyForecastSummaryByLocationName(@RequestParam String locationName) {
+		BaseResponse<JsonRootBean> responseEntity = new BaseResponse<>();
+		responseEntity = weatherForCastService.getHourlyForecastSummaryByLocationName(locationName);
 		return responseEntity;
 	}
 }
