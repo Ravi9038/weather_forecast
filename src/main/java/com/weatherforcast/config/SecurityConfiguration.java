@@ -46,7 +46,7 @@ public class SecurityConfiguration {
         
         httpSecurity.securityMatcher("/api/**").authorizeHttpRequests(rmr -> rmr
         		.requestMatchers("/authentication/**").permitAll()
-                .requestMatchers("/api/get/forecast/summary/bylocationname/**").authenticated()
+                .requestMatchers("/api/get/hourly/forecast/bylocationname/**").authenticated()
         ).httpBasic(httpbc -> httpbc
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint)
         ).sessionManagement(smc -> smc
