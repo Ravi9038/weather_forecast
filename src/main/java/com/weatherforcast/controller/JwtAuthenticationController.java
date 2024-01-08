@@ -26,16 +26,21 @@ public class JwtAuthenticationController {
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest) throws Exception {
 
-        authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
+    	String token = "";
+    	try {
+    		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-        final String token = jwtTokenUtil.generateToken(authenticationRequest.getUsername());
+    		token = jwtTokenUtil.generateToken(authenticationRequest.getUsername());
 
-        return ResponseEntity.ok(new AuthenticateResponseDto(token));
+            return ResponseEntity.ok(new AuthenticateResponseDto(token));
+		} catch (Exception e) {
+			return ResponseEntity.badRequest().body("User Name and password is not matched");
+		}
     }
 
     private void authenticate(String username, String password) throws Exception {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+        	authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
